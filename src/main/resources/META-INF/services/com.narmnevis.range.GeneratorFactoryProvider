@@ -1,0 +1,4 @@
+com.narmnevis.range.provider.DateGeneratorFactoryProvider
+com.narmnevis.range.provider.EnumGeneratorFactoryProvider
+com.narmnevis.range.provider.NumericRangeGeneratorFactoryProvider
+com.narmnevis.range.provider.ClassGeneratorFactoryProvider

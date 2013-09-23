@@ -1,0 +1,27 @@
+{
+
+	config: {
+	
+		// The number of data items to be generated
+		limit:	5,
+		
+		// The output format of the generated data
+		format:	"csv",
+		
+		// The location to persist the generated data
+		location: "/tmp/output.csv",
+		
+		// The data properties:
+		//		- the name of the property
+		//		- the type of the property
+		// 		- refer to com.narmnevis.range.generator for the supported types
+		data: {
+			date:				"date",
+			description:		"enum(gift, income, loan, budget, temp)",
+			amount:				"range(0, 1000)",
+			from:				"enum(P1, P2, P3, P4, P5, P6, P7, P8, P9, P10)",
+			to:					"enum(P1, P2, P3, P4, P5, P6, P7, P8, P9, P10)"
+		}
+	}
+
+}
