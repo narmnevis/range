@@ -21,7 +21,7 @@ import com.narmnevis.range.io.PublisherCollection;
  */
 public class SimpleRangeContext implements RangeContext {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass());
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private final RangeConfig config;
 	private final List<String> names = new ArrayList<>();
@@ -94,27 +94,37 @@ public class SimpleRangeContext implements RangeContext {
 	protected Collection<Datum> generate(List<String> names, Map<String, Generator> generators) {
 		Collection<Datum> data = new ArrayList<>();
 		for (int i = 1; i <= getSize(); ++i) {
-			final Collection<Object> values = new ArrayList<>();
-			for (String name : names) {
-				Generator generator = generators.get(name);
-				Object value = null;
-				if (generator != null) {
-					value = generator.generate(this);
-				}
-				if (value == null) {
-					value = NO_VALUE;
-				}
-				values.add(value);
-			}
-			data.add(new Datum() {
-				@Override
-				public Iterator<Object> iterator() {
-					return values.iterator();
-				}
-			});
-			logger.info("Generation completed at iteration {}", i);
+			Datum datum = generateDatum(names, generators);
+			data.add(datum);
+			logger.debug("Generation completed at iteration {}", i);
 		}
 		return data;
+	}
+
+	/**
+	 * @param names
+	 * @param generators
+	 * @return
+	 */
+	protected Datum generateDatum(List<String> names, Map<String, Generator> generators) {
+		final Collection<Object> values = new ArrayList<Object>();
+		for (String name : names) {
+			Generator generator = generators.get(name);
+			Object value = null;
+			if (generator != null) {
+				value = generator.generate(this);
+			}
+			if (value == null) {
+				value = NO_VALUE;
+			}
+			values.add(value);
+		}
+		return new Datum() {
+			@Override
+			public Iterator<Object> iterator() {
+				return values.iterator();
+			}
+		};
 	}
 
 	protected Map<String, Generator> createGenerators(List<String> names) {

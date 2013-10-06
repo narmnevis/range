@@ -37,6 +37,11 @@ public class Range {
 		return this;
 	}
 
+	public Range withLocation(String location) {
+		config.setLocation(location);
+		return this;
+	}
+
 	public Range withDataSpec(String name, String spec) {
 		config.getData().put(name, spec);
 		return this;
@@ -48,10 +53,18 @@ public class Range {
 	}
 
 	public Data generate() {
-		RangeContext context = new SimpleRangeContext(config);
+		RangeContext context = createContext(config);
 		context.generate(null);
 		context.publish(null);
 		return context;
+	}
+
+	protected RangeContext createContext(RangeConfig config) {
+		int processors = Runtime.getRuntime().availableProcessors();
+		if (processors > 2) {
+			return new ConcurrentRangeContext(config);
+		}
+		return new SimpleRangeContext(config);
 	}
 
 }
