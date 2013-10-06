@@ -6,7 +6,7 @@
 	<artifactId>range</artifactId>
 	<name>range</name>
 	<packaging>jar</packaging>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1</version>
 	<description>Range is a random data generator.</description>
 	<inceptionYear>2013</inceptionYear>
 
@@ -19,7 +19,7 @@
 		<url>scm:git:http://github.com/Narmnevis/range</url>
 		<connection>scm:git:https://github.com/Narmnevis/range</connection>
 		<developerConnection>scm:git:http://github.com/Narmnevis/range</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>range-1.1</tag>
   </scm>
 
 	<build>
