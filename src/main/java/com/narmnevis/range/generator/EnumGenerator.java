@@ -22,7 +22,7 @@ public class EnumGenerator extends AbstractGenerator {
 	@Override
 	public Object generate(RangeContext context) {
 		if (samples == null) {
-			samples = generateRandoms(context);
+			samples = generateGaussianRandoms(context);
 		}
 		try {
 			Double s = samples.remove(0);

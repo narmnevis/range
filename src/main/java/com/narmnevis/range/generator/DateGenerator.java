@@ -24,7 +24,7 @@ public class DateGenerator extends AbstractGenerator implements Generator {
 	@Override
 	public Object generate(RangeContext context) {
 		if (samples == null) {
-			samples = generateRandoms(context);
+			samples = generateGaussianRandoms(context);
 		}
 		try {
 			Double d = samples.remove(0);
