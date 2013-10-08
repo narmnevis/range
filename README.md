@@ -84,7 +84,7 @@ To have range in your project, first build it locally as described above, then i
 
 ```xml
 <dependency>
-	<groupId>com.narmnevis</groupId>
+	<groupId>com.narmnevis.range</groupId>
 	<artifactId>range</artifactId>
 	<version>VERSION</version>
 </dependency>
