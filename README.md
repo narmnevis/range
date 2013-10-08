@@ -78,6 +78,22 @@ or
 
 ## Range API
 
+### Maven Dependency
+
+To have range in your project, first build it locally as described above, then include the following dependency in your project:
+
+```xml
+<dependency>
+	<groupId>com.narmnevis</groupId>
+	<artifactId>range</artifactId>
+	<version>VERSION</version>
+</dependency>
+```
+
+in which `VERSION` is either a SNAPSHOT or a released version.
+
+### Starting example
+
 Using Range API is as simple as follows: 
 
 ```java
@@ -86,8 +102,38 @@ Using Range API is as simple as follows:
     Data data = range.generate();
 ```
 
-## Extend Range
+### Extend Range
 
-### Data Generators
+#### Custom Data Generators
 
-[v1]: http://github.com/Narmnevis/range/releases/download/range-1.0/range-1.0-standalone.zip
+A generator in Range implements `Generator` interface:
+
+```java
+public class UUIDGenerator implements Generator {
+
+	public Object generate(RangeContext context) {
+		return UUID.randomUUID().toString();
+	}
+
+}
+```
+
+To use a custom generator in Range config:
+
+1. Define the data property as:
+```myField:	"class:org.mypackage.UUIDGenerator"```
+2. Make sure that the custom generator class is included in the classpath.
+
+To use a custom generator in Range API:
+
+```java 
+Range range = new Range()
+		.withSize(10)
+		.withLocation("/tmp/data.csv").withOutputFormat("CSV")
+		.withDataSpec("id", "range(1,100)").withDataSpec("uuid", "class:org.package.UUIDGenerator");
+Data data = range.generate();
+```
+
+
+
+[v1]: http://github.com/Narmnevis/range/releases/download/range-1.1/range-1.1-standalone.zip
