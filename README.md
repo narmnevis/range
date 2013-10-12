@@ -136,4 +136,4 @@ Data data = range.generate();
 
 
 
-[v1]: http://github.com/Narmnevis/range/releases/download/range-1.1/range-1.1-standalone.zip
+[v1]: http://github.com/Narmnevis/range/releases/download/range-1.2/range-1.2-standalone.zip
