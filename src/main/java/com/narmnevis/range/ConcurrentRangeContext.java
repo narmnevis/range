@@ -32,7 +32,7 @@ public class ConcurrentRangeContext extends SimpleRangeContext {
 	@Override
 	protected Collection<Datum> generate(List<String> names, Map<String, Generator> generators) {
 		Integer size = getSize();
-		Integer batches = Double.valueOf(Math.sqrt(size) / 4).intValue();
+		Integer batches = Double.valueOf(Math.sqrt(size) / Math.log(size)).intValue();
 		if (batches ==  0) {
 			return super.generate(names, generators);
 		}
