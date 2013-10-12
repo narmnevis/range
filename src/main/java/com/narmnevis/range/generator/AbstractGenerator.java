@@ -1,9 +1,10 @@
 package com.narmnevis.range.generator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.slf4j.Logger;
@@ -16,7 +17,27 @@ public abstract class AbstractGenerator implements Generator {
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
+	private final AtomicInteger randomIndex = new AtomicInteger(0);
+	private List<Double> randomSamples;
+
 	public AbstractGenerator() {
+	}
+
+	/**
+	 * @param context
+	 * @return
+	 * 
+	 * @since 1.2
+	 */
+	protected Double getNextRandom(RangeContext context) {
+		if (randomSamples == null) {
+			randomSamples = generateGaussianRandoms(context);
+		}
+		synchronized (randomSamples) {
+			Double random = randomSamples.get(randomIndex.get());
+			randomIndex.incrementAndGet();
+			return random;
+		}
 	}
 
 	protected List<Double> generateRandoms(RangeContext context) {
@@ -50,7 +71,7 @@ public abstract class AbstractGenerator implements Generator {
 			assert r < 1 && r > 0 : "Sanity check for a Gaussian values between (0, 1) with (0, 0.33): " + r;
 			randoms.add(r);
 		}
-		return Collections.synchronizedList(randoms);
+		return new CopyOnWriteArrayList<Double>(randoms);
 	}
 
 }

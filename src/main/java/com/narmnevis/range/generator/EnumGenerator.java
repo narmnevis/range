@@ -13,7 +13,6 @@ import com.narmnevis.range.RangeContext;
 public class EnumGenerator extends AbstractGenerator {
 
 	private final List<String> candidates;
-	private List<Double> samples;
 
 	public EnumGenerator(Collection<String> candidates) {
 		this.candidates = new ArrayList<>(candidates);
@@ -21,11 +20,8 @@ public class EnumGenerator extends AbstractGenerator {
 
 	@Override
 	public Object generate(RangeContext context) {
-		if (samples == null) {
-			samples = generateGaussianRandoms(context);
-		}
 		try {
-			Double s = samples.remove(0);
+			Double s = getNextRandom(context);
 			int i = new Double(s * this.candidates.size()).intValue();
 			String next = candidates.get(i);
 			return next;

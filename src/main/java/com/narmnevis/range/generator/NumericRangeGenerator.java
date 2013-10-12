@@ -1,7 +1,5 @@
 package com.narmnevis.range.generator;
 
-import java.util.List;
-
 import com.narmnevis.range.RangeContext;
 
 /**
@@ -11,7 +9,6 @@ import com.narmnevis.range.RangeContext;
  */
 public class NumericRangeGenerator extends AbstractGenerator {
 
-	private List<Double> samples;
 	private final long start;
 	private final long end;
 
@@ -22,11 +19,8 @@ public class NumericRangeGenerator extends AbstractGenerator {
 
 	@Override
 	public Object generate(RangeContext context) {
-		if (samples == null) {
-			samples = generateGaussianRandoms(context);
-		}
 		try {
-			Double s = samples.remove(0);
+			Double s = getNextRandom(context);
 			long value = start + new Double(s * (end - start)).longValue();
 			return value;
 		} catch (Exception e) {
