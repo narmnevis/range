@@ -10,7 +10,7 @@ import com.narmnevis.range.RangeContext;
 public class ListRandomizer implements Randomizer {
 
 	private final AtomicInteger index = new AtomicInteger(-1);
-	protected List<Double> randoms;
+	private List<Double> randoms;
 	private Double sum;
 
 	public ListRandomizer(List<Double> randoms) {

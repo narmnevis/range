@@ -3,6 +3,7 @@ package com.narmnevis.range.random;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
@@ -14,13 +15,18 @@ import com.narmnevis.range.RangeContext;
  */
 public class GaussianDistributionRandomizer extends ListRandomizer {
 
+	private final AtomicBoolean initialized = new AtomicBoolean(false);
+
 	public GaussianDistributionRandomizer() {
 	}
 
 	@Override
 	protected void init(RangeContext context) {
 		super.init(context);
-		setRandoms(generateGaussianRandoms(context));
+		if (!initialized.get()) {
+			setRandoms(generateGaussianRandoms(context));
+			initialized.compareAndSet(false, true);
+		}
 	}
 
 	/**
