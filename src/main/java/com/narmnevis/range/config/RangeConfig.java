@@ -18,6 +18,7 @@ public class RangeConfig {
 	private String format = "csv";
 	private String location = null;
 	private Map<String, String> data = new HashMap<>();
+	private Map<String, String> randomizers = new HashMap<>();
 
 	public Integer getLimit() {
 		return limit;
@@ -33,6 +34,10 @@ public class RangeConfig {
 
 	public void setFormat(String format) {
 		this.format = format;
+	}
+
+	public void setRandomizers(Map<String, String> randomizers) {
+		this.randomizers = randomizers;
 	}
 
 	public Map<String, String> getData() {
@@ -51,8 +56,13 @@ public class RangeConfig {
 		return location;
 	}
 
+	public Map<String, String> getRandomizers() {
+		return randomizers;
+	}
+
 	@Override
 	public String toString() {
-		return "Config (limit=" + limit + ", format=" + format + ", data=" + data + ", location=" + location + ")";
+		return "Config (limit=" + limit + ", format=" + format + ", data=" + data + ", randomizers=" + randomizers
+				+ ", location=" + location + ")";
 	}
 }

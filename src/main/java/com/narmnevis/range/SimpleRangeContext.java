@@ -70,7 +70,7 @@ public class SimpleRangeContext implements RangeContext {
 	@Override
 	public Object generate(RangeContext context) {
 		// create generators
-		Map<String, Generator> generators = createGenerators(names);
+		Map<String, Generator> generators = createGenerators(names, config.getRandomizers());
 
 		// generate data
 		Collection<Datum> datums = generate(names, generators);
@@ -127,17 +127,47 @@ public class SimpleRangeContext implements RangeContext {
 		};
 	}
 
-	protected Map<String, Generator> createGenerators(List<String> names) {
-		GeneratorFactoryProviders providers = new GeneratorFactoryProviders();
+	/**
+	 * @param names
+	 * @param randomizers
+	 * @return
+	 */
+	protected Map<String, Generator> createGenerators(List<String> names, Map<String, String> randomizers) {
+		GeneratorFactoryProviders generatorProviders = new GeneratorFactoryProviders();
+		RandomizerFactories randomizerFactories = new RandomizerFactories();
 		Map<String, Generator> generators = new HashMap<>();
 		for (String name : names) {
 			String spec = getSpec(name);
-			Generator generator = providers.create(spec);
+			Generator generator = generatorProviders.create(spec);
 			if (generator != null) {
+				createRandomizer(randomizers, randomizerFactories, name, generator);
 				generators.put(name, generator);
 			}
 		}
 		return generators;
+	}
+
+	/**
+	 * @param datumRandomizerSpecifications
+	 * @param randomizerFactories
+	 * @param datumName
+	 * @param generator
+	 */
+	protected void createRandomizer(Map<String, String> datumRandomizerSpecifications,
+			RandomizerFactories randomizerFactories, String datumName, Generator generator) {
+		if (generator instanceof RandomizerAware) {
+			String randomizerSpec = datumRandomizerSpecifications.get(datumName);
+			if (randomizerSpec != null) {
+				Randomizer randomizer = randomizerFactories.create(randomizerSpec);
+				if (randomizer != null) {
+					((RandomizerAware) generator).setRandomizer(randomizer);
+					logger.info("Used randomizer {} for generator {} on datum {}", randomizer, generator, datumName);
+				} else {
+					logger.warn("No randomizer can be set for generator {} of {} although it has the specification.",
+							generator, datumName);
+				}
+			}
+		}
 	}
 
 }

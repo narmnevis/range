@@ -52,6 +52,16 @@ public class Range {
 		return this;
 	}
 
+	public Range withRandomizerSpec(String name, String spec) {
+		config.getRandomizers().put(name, spec);
+		return this;
+	}
+
+	public Range withRandomizerSpecs(Map<String, String> randomizers) {
+		config.setRandomizers(randomizers);
+		return this;
+	}
+
 	public Data generate() {
 		RangeContext context = createContext(config);
 		context.generate(null);

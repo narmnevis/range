@@ -10,7 +10,7 @@ import com.narmnevis.range.RangeContext;
  * @author nobeh
  * @since 1.0
  */
-public class EnumGenerator extends AbstractGenerator {
+public class EnumGenerator extends RandomizedGenerator {
 
 	private final List<String> candidates;
 
@@ -22,13 +22,17 @@ public class EnumGenerator extends AbstractGenerator {
 	public Object generate(RangeContext context) {
 		try {
 			Double s = getNextRandom(context);
-			int i = new Double(s * this.candidates.size()).intValue();
-			String next = candidates.get(i);
+			final int index;
+			if (randomizer == null) {
+				index = getIndex(s, candidates.size());
+			} else {
+				index = getRandomizedIndexWithProbability(context, randomizer, s);
+			}
+			String next = candidates.get(index);
 			return next;
 		} catch (Exception e) {
 			logger.error("Failed to generate the next enum value from {}: {}", candidates, e);
 		}
 		return null;
 	}
-
 }

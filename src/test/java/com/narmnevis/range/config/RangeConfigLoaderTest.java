@@ -2,6 +2,7 @@ package com.narmnevis.range.config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URL;
@@ -19,6 +20,8 @@ public class RangeConfigLoaderTest {
 		assertNotNull(config);
 		Integer limit = 5;
 		assertEquals(limit, config.getLimit());
+		assertTrue(config.getData().keySet().size() > 0);
+		assertTrue(config.getRandomizers().keySet().size() > 0);
 	}
 
 }

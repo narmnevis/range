@@ -3,22 +3,20 @@ package com.narmnevis.range.generator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.math3.distribution.NormalDistribution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.narmnevis.range.Generator;
+import com.narmnevis.range.Randomizer;
 import com.narmnevis.range.RangeContext;
+import com.narmnevis.range.random.GaussianDistributionRandomizer;
 
 public abstract class AbstractGenerator implements Generator {
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private final AtomicInteger randomIndex = new AtomicInteger(0);
-	private List<Double> randomSamples;
+	private final Randomizer randomizer = new GaussianDistributionRandomizer();
 
 	public AbstractGenerator() {
 	}
@@ -30,14 +28,7 @@ public abstract class AbstractGenerator implements Generator {
 	 * @since 1.2
 	 */
 	protected Double getNextRandom(RangeContext context) {
-		if (randomSamples == null) {
-			randomSamples = generateGaussianRandoms(context);
-		}
-		synchronized (randomSamples) {
-			Double random = randomSamples.get(randomIndex.get());
-			randomIndex.incrementAndGet();
-			return random;
-		}
+		return randomizer.next(context);
 	}
 
 	protected List<Double> generateRandoms(RangeContext context) {
@@ -47,31 +38,6 @@ public abstract class AbstractGenerator implements Generator {
 			randoms.add(r.nextDouble());
 		}
 		return randoms;
-	}
-
-	/**
-	 * @param context
-	 * @return
-	 * 
-	 * @since 1.1
-	 */
-	protected List<Double> generateGaussianRandoms(RangeContext context) {
-		// mean = 0 and std.dev = 0.33 ==> 99.7% of data is in (0, 1)
-		NormalDistribution nd = new NormalDistribution(0, 1.0 / 3);
-		List<Double> randoms = new ArrayList<>();
-		double[] samples = nd.sample(context.getSize());
-		for (double s : samples) {
-			double r = 1 * (1 + s) / 2;
-			// the very minority of 0.3%
-			if (Math.abs(r) > 1) {
-				r = Math.abs(1 - r);
-			} else if (r < 0) {
-				r = Math.abs(r);
-			}
-			assert r < 1 && r > 0 : "Sanity check for a Gaussian values between (0, 1) with (0, 0.33): " + r;
-			randoms.add(r);
-		}
-		return new CopyOnWriteArrayList<Double>(randoms);
 	}
 
 }
