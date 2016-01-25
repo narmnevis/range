@@ -6,7 +6,7 @@ import com.narmnevis.range.RangeContext;
 
 public class GenerexGenerator implements Generator {
 
-	private Generex generex;
+	private final Generex generex;
 	
 	public GenerexGenerator(String regexp) {
 		generex = new Generex(regexp);
