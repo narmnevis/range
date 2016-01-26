@@ -7,6 +7,7 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Throwables;
 import com.narmnevis.range.Publisher;
 import com.narmnevis.range.RangeContext;
 
@@ -31,6 +32,7 @@ public class PublisherCollection implements Publisher, Iterable<Publisher> {
 				publisher.publish(context);
 				logger.info("Publisher {} published context {}", publisher, context);
 			} catch (Exception e) {
+				logger.error("Exception occurred: ", Throwables.getRootCause(e));
 				logger.error("Publisher {} failed to publish context {}", publisher, context);
 			}
 		}

@@ -29,6 +29,7 @@ public class FilePublisher extends AbstractPublisher {
 			logger.warn("Location {} already exists. The contents will be overwritten.", location);
 		}
 		try {
+			Files.createDirectories(location.toPath().getParent());
 			writer = new PrintWriter(Files.newBufferedWriter(location.toPath(), Charset.defaultCharset()));
 		} catch (IOException e) {
 			logger.error("Cannot prepare output location {}", location);
@@ -53,4 +54,8 @@ public class FilePublisher extends AbstractPublisher {
 		writer.close();
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getName() + ":" + ((location != null ) ? location.getAbsolutePath() : "N/A");
+	}
 }
