@@ -56,6 +56,6 @@ public class FilePublisher extends AbstractPublisher {
 
 	@Override
 	public String toString() {
-		return getClass().getName() + ":" + ((location !=null ) ? location.getAbsolutePath() : "no file");
+		return getClass().getName() + ":" + ((location != null ) ? location.getAbsolutePath() : "N/A");
 	}
 }
