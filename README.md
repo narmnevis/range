@@ -30,7 +30,7 @@ Range works based on a JSON configuration file. An example is as follows:
 			date:				"date",
 			description:		"enum(gift, income, loan, budget, temp)",
 			amount:				"range(0, 1000)",
-			email:				"regex([a-z]{4}@[a-z]{4}.com)"
+			email:				"regex([a-z]{4}@[a-z]{4}.com)",
 			from:				"enum(P1, P2, P3, P4, P5, P6, P7, P8, P9, P10)",
 			to:					"enum(P1, P2, P3, P4, P5, P6, P7, P8, P9, P10)"
 		}
