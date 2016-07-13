@@ -1,3 +1,5 @@
+![range build status](https://circleci.com/gh/Narmnevis/range.svg?style=shield&circle-token=03b68b3d9ef88eccca22dc5314c98c506fd24039 "range build status")
+
 # range
 
 Range is a random data generator.
