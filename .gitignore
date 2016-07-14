@@ -2,5 +2,12 @@
 
 .gradle/
 build/
+target/
 
+*.ipr
+*.iws
+*.iml
+.classpath
+.project
+.settings/
 
