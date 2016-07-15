@@ -39,7 +39,7 @@
 	<scm>
 		<url>https://github.com/Narmnevis/range</url>
 		<connection>scm:git:https://github.com/Narmnevis/range.git</connection>
-		<developerConnection>scm:git:git@github.com/Narmnevis/range.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:Narmnevis/range.git</developerConnection>
 	  <tag>v1.3.1</tag>
   </scm>
 
