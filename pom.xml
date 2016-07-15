@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<prerequisites>
+		<maven>3.3.0</maven>
+	</prerequisites>
 
 	<groupId>com.narmnevis.range</groupId>
 	<artifactId>range</artifactId>
@@ -10,9 +13,25 @@
 	<description>Range is a random data generator.</description>
 	<inceptionYear>2013</inceptionYear>
 
+	<licenses>
+		<license>
+			<name>Apache License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+		</license>
+	</licenses>
+
 	<properties>
-		<version.log4j2>2.0-beta9</version.log4j2>
-		<version.jackson>2.2.2</version.jackson>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<java.version>1.8</java.version>
+		
+		<version.commons-math3>3.6.1</version.commons-math3>
+		<version.generex>1.0.1</version.generex>
+		<version.guava>19.0</version.guava>
+		<version.jackson>2.8.0</version.jackson>
+		<version.junit>4.12</version.junit>
+		<version.log4j2>2.6.2</version.log4j2>
+		<version.slf4j>1.7.21</version.slf4j>
 	</properties>
 
 	<scm>
@@ -27,16 +46,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.5.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
+				<version>3.0.2</version>
 				<configuration>
 					<archive>
 						<manifest>
@@ -51,7 +70,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version>
+				<version>2.6</version>
 				<executions>
 					<execution>
 						<id>package</id>
@@ -67,6 +86,62 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.4</version>
+				<configuration>
+					<tags>
+						<tag>
+							<name>implSpec</name>
+						</tag>
+					</tags>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<releaseProfiles>release</releaseProfiles>
+					<goals>deploy nexus-staging:release</goals>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>sonatype-nexus-staging</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					<stagingProfileId>6c1495e546614</stagingProfileId>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -75,66 +150,105 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
 			<version>${version.log4j2}</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 			<version>${version.jackson}</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 			<version>${version.log4j2}</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.5</version>
-			<scope>compile</scope>
+			<version>${version.slf4j}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>${version.jackson}</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>${version.jackson}</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>15.0</version>
-			<scope>compile</scope>
+			<version>${version.guava}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>${version.junit}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
 			<version>${version.log4j2}</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
-			<version>3.2</version>
-			<scope>compile</scope>
+			<version>${version.commons-math3}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.mifmif</groupId>
 			<artifactId>generex</artifactId>
-			<version>0.0.4</version>
+			<version>${version.generex}</version>
 		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<configuration>
+							<executable>gpg2</executable>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<developers>
+		<developer>
+			<id>nobeh</id>
+			<email>nobeh5@gmail.com</email>
+			<name>Behrooz Nobakht</name>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Nexus Staging Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 </project>
